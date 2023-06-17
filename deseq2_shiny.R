@@ -1,4 +1,5 @@
 library(shiny)
+library(DESeq2)
 ui <- fluidPage(
   titlePanel("DESeq2 Analysis"),
   sidebarLayout(
