@@ -1,4 +1,4 @@
-devtools::install_local(path = "./projectMaster")
+remotes::install_github("Linastep-bot/projectMaster")
 library(projectMaster)
 package_manager(c("shiny", "DESeq2"))
 
