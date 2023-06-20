@@ -1,5 +1,7 @@
-source("package_manager.R")
+library(projectMaster)
 package_manager(c("shiny", "DESeq2"))
+
+package
 
 library(shiny)
 library(DESeq2)
