@@ -1,0 +1,32 @@
+---
+title: "cytoscape"
+format: html
+editor: visual
+---
+
+## Shiny for cytoscape
+
+## Running Code
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+  fluidRow(
+    column(
+      width = 12,
+      h4("External Website"),
+      tags$iframe(src = "https://www.ndexbio.org/iquery/", width = "100%", height = "600px")
+    )
+  )
+)
+
+server <- function(input, output) {
+  # Server logic goes here
+}
+
+shinyApp(ui = ui, server = server)
+
+```
+
+We are now in rstudio environment, but we need to go to browser mode. Click on *open in browser* in upper left corner of the window
