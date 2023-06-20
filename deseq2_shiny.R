@@ -1,5 +1,10 @@
+source("package_manager.R")
+package_manager(c("shiny", "DESeq2"))
+
 library(shiny)
 library(DESeq2)
+
+
 ui <- fluidPage(
   titlePanel("DESeq2 Analysis"),
   sidebarLayout(
@@ -117,8 +122,3 @@ server <- function(input, output) {
 
 
 shinyApp(ui = ui, server = server)
-
-
-
-
-#test
