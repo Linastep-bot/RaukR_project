@@ -1,11 +1,6 @@
+devtools::install_local()
 library(projectMaster)
 package_manager(c("shiny", "DESeq2"))
-
-package
-
-library(shiny)
-library(DESeq2)
-
 
 ui <- fluidPage(
   titlePanel("DESeq2 Analysis"),
