@@ -1,4 +1,4 @@
-devtools::install_local(path = ".", subdir = "projectMaster")
+devtools::install_local(path = "./projectMaster")
 library(projectMaster)
 package_manager(c("shiny", "DESeq2"))
 
