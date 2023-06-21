@@ -59,6 +59,17 @@ server <- function(input, output) {
                            pvalueCutoff = 0.05)
     tab.kegg <- as.data.frame(ans.kegg)
     tab.kegg <- subset(tab.kegg, Count > 5)
+    # Create an empty vector to store the split results
+    split_results <- character(length(ans.kegg@result$Description))
+    
+    # For loop to split and keep the first part
+    for (i in seq_along(ans.kegg@result$Description)) {
+      split_parts <- unlist(strsplit(ans.kegg@result$Description[i], "-"))[[1]]  # Split the string
+      split_results[i] <- split_parts[1]  # Keep the first part
+    }
+    
+    # Convert the list to a vector if desired
+    ans.kegg@result$Description <- unlist(split_results)
     
     # Plot KEGG results - dotplot
     output$dotplot <- renderPlot({
@@ -68,7 +79,7 @@ server <- function(input, output) {
     # Plot KEGG results - emapplot
     output$emapplot <- renderPlot({
       x2 <- pairwise_termsim(ans.kegg) 
-      emapplot(x2, showCategory = 10, cex.params = list(category_node = 1, category_label = 0.6, line = 0.5))
+      emapplot(x2, showCategory = 10, cex.params = list(category_node = 1, category_label = 0.6, line = 0.5), height = "600px")
     })
   })
   

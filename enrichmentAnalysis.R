@@ -41,7 +41,7 @@ geneUniverse <- deseq2_results$ID
 
 
 #KEEG enrichment
-ans.kegg <- enrichKEGG(gene = deGenes_3,
+ans.kegg <- enrichKEGG(gene = deGenesUp_3,
                        organism = 'sce', 
                        universe = geneUniverse,
                        pvalueCutoff = 0.05)
@@ -49,8 +49,18 @@ tab.kegg <- as.data.frame(ans.kegg)
 tab.kegg <- subset(tab.kegg, Count>5)
 tab.kegg[1:5, 1:6]
 
-#unlist(split(ans.kegg@result$Description, "-" )) 
 
+# Create an empty vector to store the split results
+split_results <- character(length(ans.kegg@result$Description))
+
+# For loop to split and keep the first part
+for (i in seq_along(ans.kegg@result$Description)) {
+  split_parts <- unlist(strsplit(ans.kegg@result$Description[i], "-"))[[1]]  # Split the string
+  split_results[i] <- split_parts[1]  # Keep the first part
+}
+
+# Convert the list to a vector if desired
+ans.kegg@result$Description <- unlist(split_results)
 
 
 #Plot KEGG results
