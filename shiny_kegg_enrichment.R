@@ -1,9 +1,7 @@
-library(shiny)
-library(clusterProfiler)
-library(tidyverse)
-library(readr)
-library(enrichplot)
-library(data.table)
+#remotes::install_github("Linastep-bot/projectMaster")
+library(projectMaster)
+package_manager(c("shiny", "clusterProfiler", "tidyverse", "readr", "enrichplot", "data.table"))
+
 
 # UI
 ui <- fluidPage(
