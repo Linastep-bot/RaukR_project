@@ -16,6 +16,7 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
+        tabPanel("DESeq2 Results", tableOutput("resultsTable")),
         tabPanel("Heatmap", plotOutput("heatmapPlot")),
         tabPanel("Enhanced Volcano", plotOutput("volcanoPlot")),
         tabPanel("MA Plot", plotOutput("maPlot"))
@@ -32,15 +33,15 @@ ui <- fluidPage(
         fileInput("gff", "Upload GFF", accept = c(".gff", ".gff3")),
         fileInput("fasta", "Upload Reference Genome", accept = c(".fa", ".fasta")),
         actionButton("runAnalysis2", "Run DESeq2"),
-        downloadButton("downloadResults", "Download DESeq2 Results")
+        downloadButton("downloadResultssal", "Download DESeq2 Results")
       ),
     
     mainPanel(
       mainPanel(
         tabsetPanel(
-          tabPanel("Heatmap", plotOutput("heatmapPlot")),
-          tabPanel("Enhanced Volcano", plotOutput("volcanoPlot")),
-          tabPanel("MA Plot", plotOutput("maPlot"))
+          tabPanel("Heatmap", plotOutput("heatmapPlot1")),
+          tabPanel("Enhanced Volcano", plotOutput("volcanoPlot1")),
+          tabPanel("MA Plot", plotOutput("maPlot1"))
         )
       ))
       )
@@ -76,7 +77,16 @@ ui <- fluidPage(
                )
              )
            )
+  ),
+  
+  
+  
+  tabPanel("About",
+           includeMarkdown("README.md")
   )
+  
+  
+  
   )
   
   )
@@ -122,6 +132,14 @@ server <- function(input, output) {
     counts <- counts(estimateSizeFactors(ddsResults()), normalized=TRUE)
     pheatmap(counts, scale = "row", show_rownames = FALSE, clustering_distance_rows = "correlation")
   })
+  
+  # Display DESeq2 results as table
+  output$resultsTable <- renderTable({
+    req(input$runAnalysis)
+    res <- results(ddsResults())
+    res
+  })
+  
   
   output$volcanoPlot <- renderPlot({
     req(input$runAnalysis)
