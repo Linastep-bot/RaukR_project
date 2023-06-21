@@ -6,4 +6,5 @@
 From the DESeq2 output, genes that are differentially expressed are extracted and
 - Compared to NDEx Integrated Query to find genes related to differentially expressed genes
 - Pathways impacted by differentially expressed genes are annotated from the [KEGG database](https://www.genome.jp/kegg/)
+- genes of interests can be searched in cytoscape window without leaving the shiny app
 
