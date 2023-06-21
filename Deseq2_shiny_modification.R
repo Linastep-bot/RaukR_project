@@ -69,7 +69,7 @@ server <- function(input, output) {
   # Run DESeq2 analysis
   dds <- reactive({
     req(input$runAnalysis)
-    DESeqDataSetFromMatrix(countData = countData(), colData = colData(), design = ~ 1)
+    DESeqDataSetFromMatrix(countData = countData(), colData = colData(), design = ~ as.factor(colData()[,1]))
   })
   
   ddsResults <- reactive({
@@ -89,19 +89,19 @@ server <- function(input, output) {
   # Generate plots
   output$heatmapPlot <- renderPlot({
     req(input$runAnalysis)
-    counts <- count(dds, normalized = TRUE)
+    counts <- counts(estimateSizeFactors(ddsResults()), normalized=TRUE)
     pheatmap(counts, scale = "row", show_rownames = FALSE, clustering_distance_rows = "correlation")
   })
   
   output$volcanoPlot <- renderPlot({
     req(input$runAnalysis)
     res <- results(ddsResults())
-    enhancedVolcano(res, lab = rownames(res), x = 'log2FoldChange', y = 'pvalue', xlim = c(-10, 10), ylim = c(0, 10))
+    EnhancedVolcano(res, lab = rownames(res), x = 'log2FoldChange', y = 'pvalue', xlim = c(-10, 10), ylim = c(0, 10))
   })
   
   output$maPlot <- renderPlot({
     req(input$runAnalysis)
-    res <- results(ddsResults())
+    res <- as.data.frame(results(ddsResults()))
     ggplot(res, aes(x = log2FoldChange, y = baseMean)) +
       geom_point(alpha = 0.6, size = 1, color = "#2c7fb8") +
       theme_bw() +
