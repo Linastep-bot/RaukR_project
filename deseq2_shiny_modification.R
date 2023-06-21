@@ -44,6 +44,7 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
+        tabPanel("DESeq2 Results", tableOutput("resultsTable")),
         tabPanel("Heatmap", plotOutput("heatmapPlot")),
         tabPanel("Enhanced Volcano", plotOutput("volcanoPlot")),
         tabPanel("MA Plot", plotOutput("maPlot"))
@@ -85,6 +86,13 @@ server <- function(input, output) {
       write.csv(as.data.frame(results(ddsResults())), file, row.names = TRUE)
     }
   )
+  
+  # Display DESeq2 results as table
+  output$resultsTable <- renderTable({
+    req(input$runAnalysis)
+    res <- results(ddsResults())
+    res
+  })
   
   # Generate plots
   output$heatmapPlot <- renderPlot({
