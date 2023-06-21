@@ -37,7 +37,7 @@ ui <- fluidPage(
   titlePanel("DESeq2 Analysis"),
   sidebarLayout(
     sidebarPanel(
-      fileInput("countData", "Upload Count Data (CSV format)", accept = ".csv"),
+      fileInput("countData", "Upload Count Data (CSV format)", accept = ".csv"), # accept also txt file 
       fileInput("colData", "Upload ColData (CSV format)", accept = ".csv"),
       actionButton("runAnalysis", "Run DESeq2 Analysis"),
       downloadButton("downloadResults", "Download DESeq2 Results")
@@ -67,13 +67,17 @@ server <- function(input, output) {
   })
   
   # Run DESeq2 analysis
-  dds <- reactive({
-    req(input$runAnalysis)
-    DESeqDataSetFromMatrix(countData = countData(), colData = colData(), design = ~ 1)
+  dds <- eventReactive(input$runAnalysis, {
+    DESeqDataSetFromMatrix(countData = countData(), colData = colData(), design = ~ condition)
   })
   
-  ddsResults <- reactive({
+  ddsResult <- eventReactive(input$runAnalysis, {
     DESeq(dds())
+  })
+  # Display DESeq2 results as table
+  output$resultsTable <- renderTable({
+    req(input$runAnalysis)
+    results(ddsResult())
   })
   
   # Save DESeq2 results as CSV
