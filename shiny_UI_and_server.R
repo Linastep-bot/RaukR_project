@@ -150,12 +150,12 @@ server <- function(input, output) {
   output$maPlot <- renderPlot({
     req(input$runAnalysis)
     res <- as.data.frame(results(ddsResults()))
-    ggplot(res, aes(x = log2FoldChange, y = baseMean)) +
+    ggplot(res, aes(y = log2FoldChange, x = baseMean)) +
       geom_point(alpha = 0.6, size = 1, color = "#2c7fb8") +
       theme_bw() +
-      xlim(c(-10, 10)) +
-      ylim(c(0, max(res$baseMean))) +
-      labs(x = "log2 Fold Change", y = "Base Mean")
+      ylim(c(-10, 10)) +
+      xlim(c(0, max(res$baseMean))) +
+      labs(y = "log2 Fold Change", x = "Base Mean")
   })
   
   
